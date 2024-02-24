@@ -1,0 +1,173 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom, #32578b, #06172e);
+    background-color: #091D38;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.content {
+    position: absolute;
+    background-color: rgb(210, 216, 216);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    padding: 30px;
+    width: 30%;
+    box-shadow: 3px 2px 15px;
+}
+
+.logo {
+    text-align: center;
+    margin-top: 15px 0;
+}
+
+.boutique {
+    width: 80px;
+    height: 80px;
+    margin-bottom: -15px;
+}
+
+h3 {
+    color: #091D38;
+    text-align: center;
+}
+
+.erreur {
+    display: none;
+    background-color: rgb(212, 118, 118);
+    color: #b40a0a;
+    padding: 13px 5px;
+    margin: 10px 0;
+    text-align: center;
+    border-radius: 5px;
+    position: relative;
+    font-size: 16px;
+    font-weight: bold;
+    animation: anime 0.3s ease-out;
+}
+
+.erreurC {
+    background-color: rgb(212, 118, 118);
+    color: #b40a0a;
+    padding: 13px 3px;
+    text-align: center;
+    border-radius: 5px;
+    position: relative;
+    font-size: 16px;
+    font-weight: bold;
+    animation: anime 0.3s ease-out;
+}
+
+.erreurC span i, span i {
+    color: #b40a0a;
+    margin-right: 7px;
+}
+
+#fermer {
+    cursor: pointer;
+    right: 0;
+    top: 0;
+    margin: 3px;
+    position: absolute;
+    color: #ac0707;
+    font-size: 11px;
+    padding: 5px;
+}
+
+#fermer:hover {
+    color: #ff0101;
+    transition: 0.7s;
+}
+
+.succes {
+    background-color: rgb(99, 201, 86);
+    color: #076e03;
+    padding: 15px 0;
+    width: 100%;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 17px;
+    font-weight: bold;
+    animation: anime 0.3s ease-out;
+}
+
+@keyframes anime {
+    from {
+        transform: translateY(-20px);
+    }
+}
+
+form {
+    margin: 15px 0;
+}
+
+.input {
+    border-bottom: 3px solid #091D38;
+    align-items: center;
+    display: flex;
+    flex-wrap: nowrap;
+    margin-bottom: 10px;
+}
+
+i {
+    cursor: pointer;
+    color: #091D38;
+}
+
+form input[type="text"],
+form input[type="password"] {
+    padding: 12px;
+    border: none;
+    background-color: transparent;
+    color: #091D38;
+    outline: none;
+    font-weight: bolder;
+    font-size: 17px;
+    width: calc(100% - 50px);
+}
+
+form input[type="submit"] {
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bolder;
+    color: #FEEA06;
+    background-color: rgb(28, 55, 91);
+    width: 100%;
+    padding: 15px;
+    margin-top: 30px;
+    font-size: 20px;
+}
+
+form input[type="submit"]:hover {
+    background-color: #112B4D;
+    transition: .8s;
+}
+
+@media screen and (max-width: 600px) {
+    .content {
+        width: 60%;
+    }
+
+    .erreur,
+    form input[type="text"],
+    i,
+    form input[type="password"] {
+        font-size: 15px;
+    }
+
+    form input[type="submit"] {
+        font-size: 17px;
+    }
+
+    .boutique {
+        width: 60px;
+        height: 60px;
+    }
+
+    h3 {
+        font-size: 17px;
+    }
+}
