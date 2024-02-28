@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="Pages/IMG/Boutique.png">
-    <link rel="stylesheet" type="text/css" href="Pages/fontawesomev6/css/all.css">
+    <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v6.2.0/css/all.css">
     <link rel="stylesheet" href="style.css">
     <script src="Pages/JS/login.js" defer></script>
     <title>Boµtique</title>

@@ -25,7 +25,7 @@
                 <h2>Ajouter une dépense</h2>
                 <div class="erreur"></div>
                 <form action="" class="formDepense">
-                    <select name="charge" id="charge">
+                    <select name="charge_dep" id="charge">
                         <option value="">Choisir la charge</option>
                         <?php
                             $req_fr= $connexion->query("SELECT * FROM charges ORDER BY charge");

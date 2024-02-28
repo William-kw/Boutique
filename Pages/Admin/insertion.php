@@ -14,12 +14,12 @@ $idsld = $resSH["ID_SLD"];
 
 // INSERTION DES RECETTES 
 if (isset($_POST["montant_rec"]) && isset($_POST["date"])) {
-    $recette = $_POST["montant_rec"];
+    intval($recette = $_POST["montant_rec"]);
     $date = $_POST["date"];
     if (!empty($recette) && !empty($date)) {
         $reqCheckDate = $connexion->query("SELECT * FROM journees WHERE DATE_JR <= '$date'");
         if ($reqCheckDate->rowCount() > 0) {
-            if (is_int($recette) && $recette > 0) {
+            if (is_int($recette) || $recette > 0) {
                 // ID_MOIS 
                 $req = $connexion->query("SELECT MAX(ID_MOIS) AS ID_MOIS FROM mois");
                 $idmois = $req->fetch();
@@ -111,14 +111,14 @@ if (isset($_POST["montant_ach"]) && isset($_POST["four"])) {
 }
 
 /* INSERTION DES DEPENSES */
-if (isset($_POST['charge']) && isset($_POST["montant_dep"])) {
+if (isset($_POST["charge_dep"]) && isset($_POST["montant_dep"])) {
     $depense = $_POST["montant_dep"];
-    $charge = $_POST['charge'];
+    $charge = $_POST["charge_dep"];
     if (!empty($depense) && !empty($charge)) {
         if (intval($depense)) {
-            // $insert_ach = $connexion->prepare("INSERT INTO depenses VALUES (null, ?, ?, ?) ");
-            // $res_ach = $insert_ach->execute([$journee, $charge, $depense]);
-            // if ($res_ach) echo "Success";
+            $insert_ach = $connexion->prepare("INSERT INTO depenses VALUES (null, ?, ?, ?) ");
+            $res_ach = $insert_ach->execute([$journee, $charge, $depense]);
+            if ($res_ach) echo "Success";
         } else echo "Erreur : entrez un nombre";
     } else echo "Erreur : un ou plusieurs champs vide(s)";
 }
