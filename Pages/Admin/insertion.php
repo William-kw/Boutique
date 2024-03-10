@@ -28,9 +28,6 @@ if (isset($_POST["montant_rec"]) && isset($_POST["date"])) {
                 if (($jour[2] * 1) === 06) {
                     $idmois += 1;
                     $req = $connexion->query("INSERT INTO mois VALUES ('$idmois')");
-                    $req = $connexion->query("SELECT MAX(ID_MOIS) AS ID_MOIS FROM mois");
-                    $idmois = $req->fetch();
-                    $idmois = $idmois["ID_MOIS"];
                 }
                 // MISE A JOUR DU SOLDE DE LA JOURNEE
                 // RECUPERER LES ACHATS D'HIER 

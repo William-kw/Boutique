@@ -34,26 +34,24 @@
                     <th>Recettes</th>
                     <th>Achats</th>
                     <th>Dépenses</th>
-                    <th>Report</th>
                     <th>Bénéfices Bruts</th>
                     <th>Bénéfices Réels</th>
                     <th>Détails</th>
                 </thead>
                 <tbody>
                     <?php
-                        $req_recap= $connexion->query("SELECT ID_MOIS, YEAR(DATE_JR) as ANNEE, MONTH(DATE_JR) as MOIS, ACHAT, RECETTE, DEPENSE, REPORT
-                                                        FROM (SELECT REPORT FROM journees LEFT JOIN mois ON journees.id_mois=mois.id_mois) as reportmois INNER JOIN
-                                                            (SELECT SUM(montant_ach) AS ACHAT, journees.id_mois as numa FROM journees LEFT JOIN achats ON journees.id_jr=achats.id_jr GROUP BY id_mois) as mach INNER JOIN 
+                        $req_recap= $connexion->query("SELECT ID_MOIS, YEAR(DATE_JR) as ANNEE, MONTH(DATE_JR) as MOIS, ACHAT, RECETTE, DEPENSE
+                                                        FROM (SELECT SUM(montant_ach) AS ACHAT, journees.id_mois as numa FROM journees LEFT JOIN achats ON journees.id_jr=achats.id_jr GROUP BY id_mois) as mach INNER JOIN 
                                                             (SELECT SUM(montant_rec) AS RECETTE, journees.id_mois as numr FROM journees LEFT JOIN recettes ON journees.id_rec=recettes.id_rec GROUP BY id_mois) as mrec ON mach.numa=mrec.numr INNER JOIN
                                                             (SELECT SUM(montant_dep) AS DEPENSE, journees.id_mois as numd FROM journees LEFT JOIN depenses ON journees.id_jr=depenses.id_jr GROUP BY id_mois) as mdep On mrec.numr=mdep.numd INNER JOIN journees ON mdep.numd=journees.ID_MOIS
                                                         GROUP BY id_mois 
-                                                        ORDER BY id_mois LIMIT $debut, $nb_element");
+                                                        ORDER BY id_mois
+                                                        LIMIT $debut, $nb_element");
                         if($req_recap -> rowCount() == 0) header("location: recapitulatif.php");
                         while ($aff= $req_recap->fetch()) {
                             $annee= $aff["ANNEE"];
                             $mois= $aff["MOIS"];
                             $recette= $aff["RECETTE"];
-                            $report= $aff["REPORT"];
                             $achat = (empty($aff["ACHAT"])) ? 0 : $aff["ACHAT"];
                             $depense = (empty($aff["DEPENSE"])) ? 0 : $aff["DEPENSE"];    
                             $benefice_B= $recette * 0.08;
@@ -66,10 +64,9 @@
                         <td><?= $recette; ?></td>
                         <td><?= $achat; ?></td>
                         <td><?= $depense; ?></td>
-                        <td><?= $report; ?></td>
                         <td><?= $benefice_B; ?></td>
                         <td><?= $benefice_R; ?></td>  
-                        <td><a href="detail.php?idmois=<?= $aff["ID_MOIS"]; ?>" title="Plus de détail"><i class="fa-solid fa-list"></i></a></td>                      
+                        <td><a href="detail.php?idmois=<?= $aff["ID_MOIS"]; ?>-mois=<?= $aff["MOIS"]; ?>" title="Plus de détail"><i class="fa-solid fa-list"></i></a></td>                      
                     </tr>
                     <?php } ?>
                 </tbody>

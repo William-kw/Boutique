@@ -6,8 +6,8 @@ const modif = document.querySelector(".modif-form"),
 form.forEach(formM => {
     formM.addEventListener("submit", (event)=>{
         event.preventDefault()
-        modifier(formM)
     })
+    modifier(formM)
 })
 
 function modifier(formulaire) {
