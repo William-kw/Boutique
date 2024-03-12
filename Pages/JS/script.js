@@ -16,8 +16,8 @@ fermer.addEventListener("click", () => {
 forms.forEach(form => {
     form.addEventListener("submit", (e) => {
         e.preventDefault()
+        insertion(form)
     })
-    insertion(form)
 })
 
 function insertion(formulaire) {
