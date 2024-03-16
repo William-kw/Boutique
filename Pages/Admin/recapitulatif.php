@@ -62,7 +62,7 @@
                         <td><?= $annee; ?></td>
                         <td><?= mois($mois); ?></td>
                         <td><?= $recette; ?></td>
-                        <td><?= $achat; ?></td>
+                        <td title="<?= $achat + $depense; ?>"><?= $achat; ?></td>
                         <td><?= $depense; ?></td>
                         <td><?= $benefice_B; ?></td>
                         <td><?= $benefice_R; ?></td>  
