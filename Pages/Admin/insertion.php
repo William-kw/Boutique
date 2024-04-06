@@ -1,16 +1,10 @@
 <?php
-    session_start();
+session_start();
 require_once("../connexion.php");
 
 $select_jr = $connexion->query("SELECT ID_JR FROM journees ORDER BY ID_JR DESC LIMIT 1");
 $journee = $select_jr->fetch();
 $journee = $journee['ID_JR'];
-
-// RECUPERER LE SOLDE D'HIER 
-$reqsh = $connexion->query("SELECT ID_SLD, SOLDE FROM soldes ORDER BY ID_SLD DESC LIMIT 1");
-$resSH = $reqsh->fetch();
-$solde_hier = $resSH["SOLDE"];
-$idsld = $resSH["ID_SLD"];
 
 // INSERTION DES RECETTES 
 if (isset($_POST["montant_rec"]) && isset($_POST["date"])) {
@@ -29,46 +23,12 @@ if (isset($_POST["montant_rec"]) && isset($_POST["date"])) {
                     $idmois += 1;
                     $req = $connexion->query("INSERT INTO mois VALUES ('$idmois')");
                 }
-                // MISE A JOUR DU SOLDE DE LA JOURNEE
-                // RECUPERER LES ACHATS D'HIER 
-                $reqah = $connexion->query("SELECT SUM(MONTANT_ACH) AS HIER 
-                        FROM achats 
-                        WHERE ID_JR=(SELECT ID_JR FROM journees ORDER BY ID_JR DESC LIMIT 1) 
-                        GROUP BY ID_JR ORDER BY ID_ACH DESC LIMIT 1");
-                $resAH = $reqah->fetch();
-                $achat_hier = (empty($resAH["HIER"])) ? 0: $resAH["HIER"];
-
-                // RECUPERER LA DEPENSE D'HIER 
-                $reqdh = $connexion->query("SELECT SUM(MONTANT_DEP) AS HIER 
-                        FROM depenses 
-                        WHERE ID_JR=(SELECT ID_JR FROM journees ORDER BY ID_JR DESC LIMIT 1)                                    
-                        GROUP BY ID_JR ORDER BY ID_DEP DESC LIMIT 1");
-                $resDH = $reqdh->fetch();
-                $depense_hier = (empty($resDH["HIER"])) ? 0: $resDH["HIER"];
-
-                $solde_soir = $solde_hier - $achat_hier - $depense_hier;
-                $req_update_solde = $connexion->prepare("UPDATE soldes SET SOLDE= ? WHERE ID_SLD= ?");
-                $up = $req_update_solde->execute([$solde_soir, $idsld]);
-                if ($up) {
-                    // RECUPERER LA RECETTE D'HIER 
-                    $reqrh = $connexion->query("SELECT MONTANT_REC FROM recettes ORDER BY ID_REC DESC LIMIT 1");
-                    $resRH = $reqrh->fetch();
-                    $recette_hier = $resRH["MONTANT_REC"];
-                    $solde_matin = (date('d') == 06) ? $solde_soir - $_SESSION["benefice"] : $solde_soir + $recette_hier;
-                    $insert_rec = $connexion->query("INSERT INTO recettes VALUES (null, $recette)");
-                    $insert_sld = $connexion->query("INSERT INTO soldes VALUES(null, $solde_matin)");
-
-                    // CREATION D'UNE NOUVELLE JOURNEE 
-                    $reqidsld = $connexion->query("SELECT ID_SLD FROM soldes ORDER BY ID_SLD DESC LIMIT 1");
-                    $idsldjour = $reqidsld->fetch();
-                    $idsldjour = $idsldjour["ID_SLD"];
-                    $select_rec = $connexion->query("SELECT ID_REC FROM recettes ORDER BY ID_REC DESC LIMIT 1");
-                    $idrec = $select_rec->fetch();
-                    $idrec = $idrec['ID_REC'];
-                    $insert_jr = $connexion->prepare("INSERT INTO journees VALUES (null, ?, ?, ?, ?)");
-                    $insert = $insert_jr->execute([$idrec, $idmois, $idsldjour, $date]);
-                    if ($insert) echo "Success";
-                } else header("location:recette.php?result=update");
+                $select_rec = $connexion->query("SELECT ID_REC FROM recettes ORDER BY ID_REC DESC LIMIT 1");
+                $idrec = $select_rec->fetch();
+                $idrec = $idrec['ID_REC'];
+                $insert_jr = $connexion->prepare("INSERT INTO journees VALUES (null, ?, ?, ?)");
+                $insert = $insert_jr->execute([$idrec, $idmois, $date]);
+                if ($insert) echo "Success";
             } else echo "Erreur : Le montant n'est pas valide";
         } else echo "Erreur : cette date existe déjà";
     } else echo "Erreur : un ou plusieurs champs vide(s)";

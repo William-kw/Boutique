@@ -91,20 +91,17 @@
                                     <th>Recette</th>
                                     <th>Achat</th>
                                     <th>Dépense</th>
-                                    <th>Solde</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
-                                    $req_recap= $connexion->query("SELECT journees.date_jr as JOURNEE, mrec.R as RECETTE, mach.A as ACHAT, mdep.D AS DEPENSE, msld.S AS SOLDE 
+                                    $req_recap= $connexion->query("SELECT journees.date_jr as JOURNEE, mrec.R as RECETTE, mach.A as ACHAT, mdep.D AS DEPENSE 
                                                                         FROM (SELECT SUM(montant_ach) AS A, journees.date_jr as jr FROM journees LEFT JOIN achats ON journees.id_jr=achats.id_jr WHERE DATE_JR= (SELECT MAX(DATE_jr) FROM journees) GROUP BY jr) AS mach INNER JOIN 
                                                                         (SELECT montant_rec AS R, journees.date_jr as jr FROM journees LEFT JOIN recettes ON journees.id_rec=recettes.id_rec WHERE DATE_JR= (SELECT MAX(DATE_jr) FROM journees)) AS mrec ON mach.jr=mrec.jr INNER JOIN 
-                                                                        (SELECT SUM(montant_dep) AS D, journees.date_jr as jr FROM journees LEFT JOIN depenses ON journees.id_jr=depenses.id_jr WHERE DATE_JR= (SELECT MAX(DATE_jr) FROM journees) GROUP BY jr) AS mdep ON mrec.jr=mdep.jr INNER JOIN journees ON mdep.jr=journees.date_jr INNER JOIN 
-                                                                        (SELECT solde AS S, journees.date_jr as jr FROM journees LEFT JOIN soldes ON journees.id_sld=soldes.id_sld WHERE DATE_JR= (SELECT MAX(DATE_jr) FROM journees)) AS msld ON mdep.jr=msld.jr
+                                                                        (SELECT SUM(montant_dep) AS D, journees.date_jr as jr FROM journees LEFT JOIN depenses ON journees.id_jr=depenses.id_jr WHERE DATE_JR= (SELECT MAX(DATE_jr) FROM journees) GROUP BY jr) AS mdep ON mrec.jr=mdep.jr INNER JOIN journees ON mdep.jr=journees.date_jr
                                                                         ORDER BY JOURNEE DESC");
                                     while ($aff= $req_recap->fetch()) {
                                         $recette= $aff["RECETTE"];
-                                        $solde= $aff["SOLDE"];
                                         $achat = (empty($aff["ACHAT"])) ? 0 : $aff["ACHAT"];
                                         $depense = (empty($aff["DEPENSE"])) ? 0 : $aff["DEPENSE"];                            
                                 ?>
@@ -112,7 +109,6 @@
                                     <td><?= $recette; ?></td>
                                     <td><?= $achat; ?></td>
                                     <td><?= $depense; ?></td> 
-                                    <td><?= $solde; ?></td>    
                                 </tr>
                                 <?php } ?>
                             </tbody>

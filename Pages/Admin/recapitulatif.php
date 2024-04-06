@@ -56,7 +56,6 @@
                             $depense = (empty($aff["DEPENSE"])) ? 0 : $aff["DEPENSE"];    
                             $benefice_B= $recette * 0.08;
                             $benefice_R= $benefice_B - $depense;
-                            $_SESSION["benefice"]= $benefice_R;
                     ?>
                     <tr>
                         <td><?= $annee; ?></td>

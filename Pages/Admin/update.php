@@ -24,16 +24,7 @@
             $update_date =  $connexion->prepare("UPDATE journees SET DATE_JR= ? WHERE ID_JR = ?")->execute([$dateR, $idjr]);
             $update_rec = $connexion->prepare("UPDATE recettes SET MONTANT_REC= ? WHERE ID_REC= ?");
             $res_rec = $update_rec->execute(array($montant, $idrec));
-            $req_solde = $connexion->query("SELECT * FROM soldes 
-                                                        WHERE ID_SLD= (SELECT ID_SLD FROM journees WHERE ID_REC=$idrec)
-                                                        ORDER BY ID_SLD DESC LIMIT 1, 1");
-            $res_solde = $req_solde->fetch();
-            $ancien_solde = (empty($res_solde["SOLDE"])) ? 0 : $res_solde["SOLDE"];
-            $idsld = (empty($res_solde["ID_SLD"])) ? 0 : $res_solde["ID_SLD"];
-            $nouveau_solde = $ancien_solde + $montant;
-            $update_sld = $connexion->prepare("UPDATE soldes SET SOLDE= ? WHERE ID_SLD= ?");
-            $res_sld = $update_sld->execute(array($nouveau_solde, $idsld));
-            if ($res_sld) echo "recette";
+            if ($res_rec) echo "recette";
         } else echo "Erreur : un ou plusieurs champs vide(s)";
     }
 
