@@ -8,12 +8,13 @@ $journee = $journee['ID_JR'];
 
 // INSERTION DES RECETTES 
 if (isset($_POST["montant_rec"]) && isset($_POST["date"])) {
-    intval($recette = $_POST["montant_rec"]);
+    $recette = intval($_POST["montant_rec"]);
     $date = $_POST["date"];
     if (!empty($recette) && !empty($date)) {
         $reqCheckDate = $connexion->query("SELECT * FROM journees WHERE DATE_JR <= '$date'");
         if ($reqCheckDate->rowCount() > 0) {
             if (is_int($recette) || $recette > 0) {
+                $connexion->query("INSERT INTO recettes VALUES (null, '$recette')");
                 // ID_MOIS 
                 $req = $connexion->query("SELECT MAX(ID_MOIS) AS ID_MOIS FROM mois");
                 $idmois = $req->fetch();
